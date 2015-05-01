@@ -18,22 +18,18 @@
   ([sp pos]
    (make-buffer sp pos 5))
   ([sp pos len]
-   (when-let [bytebuf (. java.nio.ByteBuffer allocateDirect len)]
-    (file-seek bytebuf pos)
-    (compose-buffer
-      (case sp
-        :chunk-loc (spec :offset (medium-type) :sector-n (byte-type))
-        :chunk-ts (spec :timestamp (int32-type))
-        :chunk-data (spec :length (int32-type) :compression (byte-type)))
-      :orig-buffer bytebuf))))
+   (compose-buffer
+     (case sp
+       :chunk-loc (spec :offset (medium-type) :sector-n (byte-type))
+       :chunk-ts (spec :timestamp (int32-type))
+       :chunk-data (spec :length (int32-type) :compression (byte-type)))
+     :orig-buffer (make-bytebuffer pos len))))
 
 (defn make-bytebuffer
   ([len]
    (. java.nio.ByteBuffer allocateDirect len))
   ([pos len]
-   (when-let [bytebuf (. java.nio.ByteBuffer allocateDirect len)]
-     (file-seek bytebuf pos)
-     bytebuf)))
+   (file-seek (. java.nio.ByteBuffer allocateDirect len) pos)))
 
 (defn to-byte-array
   [bbuf]
