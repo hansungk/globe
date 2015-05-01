@@ -2,3 +2,9 @@
 - command line program
 - server plugin
 - both? maybe doesn't matter
+
+* Structure
+- dirty java
+- reader
+- parser (w/ reader?)
+- editor
