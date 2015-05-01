@@ -22,10 +22,13 @@
   (* 4096 (get-field (make-buffer :chunk-loc (chunk-location-offset x z)) :offset)))
 
 (defn chunk-timestamp
+  "Get the last-modified timestamp of the chunk that contains x z block.
+  Timestamp is a Unix time."
   [x z]
   (get-field (make-buffer :chunk-ts (chunk-timestamp-offset x z)) :timestamp))
 
 (defn chunk-data
+  "Get the compressed chunk data which contains the x z block as byte array."
   [x z]
   (let [pos (chunk-location x z)
         data-length (dec (get-field (make-buffer :chunk-data pos) :length))]
