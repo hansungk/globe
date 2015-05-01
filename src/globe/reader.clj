@@ -1,5 +1,6 @@
 (ns globe.reader
   (:require [globe.buffer :refer :all]
+            [globe.zlib :refer [decompress]]
             [clojurewerkz.buffy.core :refer [get-field]]))
 
 (defn region-filename
@@ -32,4 +33,7 @@
   [x z]
   (let [pos (chunk-location x z)
         data-length (dec (get-field (make-buffer :chunk-data pos) :length))]
-    (to-byte-array (make-bytebuffer (+ pos 5) data-length))))
+    (->> data-length
+         (make-bytebuffer (+ pos 5))
+         to-byte-array
+         decompress)))
